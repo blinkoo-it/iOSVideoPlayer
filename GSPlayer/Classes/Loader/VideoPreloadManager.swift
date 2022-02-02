@@ -23,7 +23,7 @@ public class VideoPreloadManager: NSObject {
     private var waitingQueue: [URL] = []
     
     public func add(url: URL) {
-        if(waitingQueue.isEmpty) {
+        if waitingQueue.isEmpty {
             set(waiting: [url])
             return
         }
