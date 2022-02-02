@@ -27,7 +27,7 @@ public class VideoPreloadManager: NSObject {
             set(waiting: [url])
             return
         }
-        waitingQueue.append(url);
+        waitingQueue.append(url)
     }
     
     public func set(waiting: [URL]) {
