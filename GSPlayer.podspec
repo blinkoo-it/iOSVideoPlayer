@@ -1,17 +1,38 @@
-Pod::Spec.new do |s|
-  s.name         = 'GSPlayer'
-  s.version      = '0.2.25'
-  s.summary      = '⏯ Video player, support for caching, fullscreen transition and custom control view. 视频播放器，支持边下边播、全屏转场和自定义控制层'
-  s.homepage     = 'https://github.com/wxxsw/GSPlayer'
-  
-  s.license      = 'MIT'
-  s.author       = { 'Gesen' => 'i@gesen.me' }
-  s.source       = { :git => 'https://github.com/wxxsw/GSPlayer.git', :tag => s.version.to_s }
-  
-  s.osx.source_files = 'GSPlayer/Classes/Cache/*.swift', 'GSPlayer/Classes/Download/*.swift', 'GSPlayer/Classes/Extension/*.swift', 'GSPlayer/Classes/Loader/*.swift', 'GSPlayer/Classes/MacOS/*.swift'
-  s.ios.source_files = 'GSPlayer/Classes/Cache/*.swift', 'GSPlayer/Classes/Download/*.swift', 'GSPlayer/Classes/Extension/*.swift', 'GSPlayer/Classes/Loader/*.swift', 'GSPlayer/Classes/View/*.swift'
-  
-  s.ios.deployment_target = '10.0'
-  s.osx.deployment_target = "10.12"
-  s.swift_versions = ['5.0']
-end
+[!] Unknown command: `GSPlayer,`
+Did you mean: spec?
+
+Usage:
+
+    $ pod COMMAND
+
+      CocoaPods, the Cocoa library package manager.
+
+Commands:
+
+    + cache         Manipulate the CocoaPods cache
+    + deintegrate   Deintegrate CocoaPods from your project
+    + env           Display pod environment
+    + init          Generate a Podfile for the current directory
+    + install       Install project dependencies according to versions from a
+                    Podfile.lock
+    + ipc           Inter-process communication
+    + lib           Develop pods
+    + list          List pods
+    + outdated      Show outdated project dependencies
+    + plugins       Show available CocoaPods plugins
+    + repo          Manage spec-repositories
+    + search        Search for pods
+    + setup         Setup the CocoaPods environment
+    + spec          Manage pod specs
+    + trunk         Interact with the CocoaPods API (e.g. publishing new specs)
+    + try           Try a Pod!
+    + update        Update outdated project dependencies and create new Podfile.lock
+
+Options:
+
+    --allow-root    Allows CocoaPods to run as root
+    --silent        Show nothing
+    --version       Show the version of the tool
+    --verbose       Show more debugging information
+    --no-ansi       Show output without ANSI codes
+    --help          Show help banner of specified command

@@ -22,6 +22,14 @@ public class VideoPreloadManager: NSObject {
     private var isAutoStart: Bool = true
     private var waitingQueue: [URL] = []
     
+    public func add(url: URL) {
+        if(waitingQueue.isEmpty) {
+            set(waiting: [url])
+            return
+        }
+        waitingQueue.append(url);
+    }
+    
     public func set(waiting: [URL]) {
         downloader = nil
         waitingQueue = waiting
