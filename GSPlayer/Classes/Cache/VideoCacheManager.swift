@@ -51,3 +51,17 @@ public enum VideoCacheManager {
     }
     
 }
+
+@objc public class VideoCacheManagerUtils : NSObject {
+    @objc public static func cachedFilePath(for url: URL) -> String {
+        return VideoCacheManager.cachedFilePath(for: url);
+    }
+    
+    @objc public static func calculateCachedSize() -> UInt {
+        VideoCacheManager.calculateCachedSize();
+    }
+    
+    @objc public static func cleanAllCache() throws {
+        try VideoCacheManager.cleanAllCache();
+    }
+}

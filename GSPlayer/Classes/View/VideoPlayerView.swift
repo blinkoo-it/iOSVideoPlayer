@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-open class VideoPlayerView: UIView {
+@objcMembers open class VideoPlayerView: UIView {
     
     public enum State {
         
@@ -169,7 +169,7 @@ open class VideoPlayerView: UIView {
     /// Play a video of the specified url.
     ///
     /// - Parameter url: Can be a local or remote URL
-    open func play(for url: URL) {
+    open func play(for url: URL, with useCache: Bool = true) {
         guard playerURL != url else {
             pausedReason = .waitingKeepUp
             player?.play()
@@ -185,7 +185,7 @@ open class VideoPlayerView: UIView {
         let player = AVPlayer()
         player.automaticallyWaitsToMinimizeStalling = false
         
-        let playerItem = AVPlayerItem(loader: url)
+        let playerItem = AVPlayerItem(loader: url, with: useCache)
         playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         
         self.player = player
@@ -225,6 +225,9 @@ open class VideoPlayerView: UIView {
     
     /// Pause video.
     open func pause() {
+        if pausedReason == .waitingKeepUp {
+            pausedReason = .userInteraction
+        }
         player?.pause()
     }
     
@@ -253,6 +256,10 @@ open class VideoPlayerView: UIView {
     /// Cancels a previously registered periodic or boundary time observer.
     open func removeTimeObserver(_ observer: Any) {
         player?.removeTimeObserver(observer)
+    }
+    
+    open func currentItem() -> AVPlayerItem? {
+        return player?.currentItem
     }
 }
 

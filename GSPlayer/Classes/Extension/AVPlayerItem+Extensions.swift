@@ -55,8 +55,8 @@ extension AVPlayerItem {
         return configuration.downloadedByteCount >= 1024 * 768
     }
     
-    convenience init(loader url: URL) {
-        if url.isFileURL || url.pathExtension == "m3u8" {
+    convenience init(loader url: URL, with useCache: Bool = true) {
+        if url.isFileURL || url.pathExtension == "m3u8" || !useCache {
             self.init(url: url)
             return
         }
