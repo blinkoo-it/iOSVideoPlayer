@@ -176,18 +176,13 @@ import AVFoundation
             return
         }
         
-        observe(player: nil)
-        observe(playerItem: nil)
-        
-        self.player?.currentItem?.cancelPendingSeeks()
-        self.player?.currentItem?.asset.cancelLoading()
+        clear()
         
         let player = AVPlayer()
         player.automaticallyWaitsToMinimizeStalling = false
         
         let playerItem = AVPlayerItem(loader: url, with: useCache)
         playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = true
-        
         self.player = player
         self.playerURL = url
         self.pausedReason = .waitingKeepUp
@@ -208,6 +203,14 @@ import AVFoundation
         observe(playerItem: playerItem)
     }
     
+    open func clear() {
+        observe(player: nil)
+        observe(playerItem: nil)
+        
+        player?.currentItem?.cancelPendingSeeks()
+        VideoLoadManager.shared.resourceLoaderPause(for: playerURL)
+        player?.currentItem?.asset.cancelLoading()
+    }
     /// Replay video.
     ///
     /// - Parameter resetCount: Reset replayCount

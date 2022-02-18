@@ -33,10 +33,6 @@ import Foundation
     
     @objc public func set(waiting: [URL]) {
         downloader = nil
-        print("\nDEBUG - Pre-cache this urls:\n")
-        for url in waiting{
-            print("\(url)\n")
-        }
         waitingQueue = waiting
         if isAutoStart { start() }
     }
