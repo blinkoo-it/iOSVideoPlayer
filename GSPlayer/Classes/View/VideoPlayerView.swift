@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-@objcMembers open class VideoPlayerView: UIView {
+open class VideoPlayerView: UIView {
     
     public enum State {
         
@@ -192,7 +192,7 @@ import AVFoundation
         if playerItem.isEnoughToPlay || url.isFileURL {
             state = .none
             isLoaded = playerItem.status == .readyToPlay
-            player.play()
+            //player.play()
         } else {
             state = .loading
         }
@@ -207,8 +207,8 @@ import AVFoundation
         observe(player: nil)
         observe(playerItem: nil)
         
-        player?.currentItem?.cancelPendingSeeks()
         VideoLoadManager.shared.resourceLoaderPause(for: playerURL)
+        player?.currentItem?.cancelPendingSeeks()
         player?.currentItem?.asset.cancelLoading()
     }
     /// Replay video.
@@ -263,6 +263,10 @@ import AVFoundation
     
     open func currentItem() -> AVPlayerItem? {
         return player?.currentItem
+    }
+    
+    open func nativePlayer() -> AVPlayer? {
+        return player
     }
 }
 
