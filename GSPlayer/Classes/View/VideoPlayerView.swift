@@ -172,7 +172,7 @@ open class VideoPlayerView: UIView {
     open func play(for url: URL, with useCache: Bool = true) {
         guard playerURL != url else {
             pausedReason = .waitingKeepUp
-            player?.play()
+            //player?.play()
             return
         }
         
@@ -376,7 +376,7 @@ private extension VideoPlayerView {
         playerItemKeepUpObservation = playerItem.observe(\.isPlaybackLikelyToKeepUp) { [unowned self] item, _ in
             if item.isPlaybackLikelyToKeepUp {
                 if self.player?.rate == 0, self.pausedReason == .waitingKeepUp {
-                    self.player?.play()
+                    //self.player?.play()
                 }
             }
         }
