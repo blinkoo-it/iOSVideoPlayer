@@ -46,8 +46,8 @@ public enum VideoCacheManager {
         
         for fileContent in fileContents {
             let filePath = directory.appendingPathComponent(fileContent)
-            let fileAttributes = try fileManager.attributesOfItem(atPath: filePath)
-            let fileCreationDate = fileAttributes[FileAttributeKey.creationDate] as! Date
+            let fileAttributes = try fileManager.attributesOfItem(atPath: filePath) as [FileAttributeKey:Any]
+            let fileCreationDate = fileAttributes[.creationDate] as! Date
             if (fileCreationDate < date) {
                 try fileManager.removeItem(atPath: filePath)
                 try fileManager.removeItem(atPath: VideoCacheConfiguration.configurationFilePath(for: filePath))
