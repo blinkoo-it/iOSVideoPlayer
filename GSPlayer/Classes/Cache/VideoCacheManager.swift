@@ -40,7 +40,7 @@ public enum VideoCacheManager {
         }
     }
     
-    public static func cleanAllCache(beforeDate date: Date) throws {
+    public static func cleanAllCache(beforeTimestamp timestamp: Int64) throws {
         let fileManager = FileManager.default
         let fileContents = try fileManager.contentsOfDirectory(atPath: directory)
         
@@ -48,7 +48,7 @@ public enum VideoCacheManager {
             let filePath = directory.appendingPathComponent(fileContent)
             let fileAttributes = try fileManager.attributesOfItem(atPath: filePath) as [FileAttributeKey:Any]
             let fileCreationDate = fileAttributes[.creationDate] as! Date
-            if (fileCreationDate < date) {
+            if (Int64(fileCreationDate.timeIntervalSince1970) < timestamp) {
                 try fileManager.removeItem(atPath: filePath)
                 try fileManager.removeItem(atPath: VideoCacheConfiguration.configurationFilePath(for: filePath))
             }
@@ -74,8 +74,8 @@ public enum VideoCacheManager {
         VideoCacheManager.calculateCachedSize();
     }
     
-    @objc public static func cleanAllCache(beforeDate date: Date) throws {
-        try VideoCacheManager.cleanAllCache(beforeDate: date);
+    @objc public static func cleanAllCache(beforeTimestamp timestamp: Int64) throws {
+        try VideoCacheManager.cleanAllCache(beforeTimestamp: timestamp);
     }
     
     @objc public static func deleteFile(for url: URL) throws {
