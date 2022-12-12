@@ -40,18 +40,17 @@ public enum VideoCacheManager {
         }
     }
     
-    public static func cleanAllCache(excepts urls: [URL]? = nil) throws {
+    public static func cleanAllCache(beforeDate date: Date) throws {
         let fileManager = FileManager.default
         let fileContents = try fileManager.contentsOfDirectory(atPath: directory)
-        var excepts = urls?.map{cachedFilePath(for: $0)} ?? []
-        for filePath in excepts {
-            excepts.append(VideoCacheConfiguration.configurationFilePath(for: filePath))
-        }
         
         for fileContent in fileContents {
             let filePath = directory.appendingPathComponent(fileContent)
-            if excepts.isEmpty || !excepts.contains(filePath) {
+            let fileAttributes = try fileManager.attributesOfItem(atPath: filePath)
+            let fileCreationDate = fileAttributes[FileAttributeKey.creationDate] as! Date
+            if (fileCreationDate < date) {
                 try fileManager.removeItem(atPath: filePath)
+                try fileManager.removeItem(atPath: VideoCacheConfiguration.configurationFilePath(for: filePath))
             }
         }
     }
@@ -75,8 +74,8 @@ public enum VideoCacheManager {
         VideoCacheManager.calculateCachedSize();
     }
     
-    @objc public static func cleanAllCache(excepts urls: [URL]? = nil) throws {
-        try VideoCacheManager.cleanAllCache(excepts: urls);
+    @objc public static func cleanAllCache(beforeDate date: Date) throws {
+        try VideoCacheManager.cleanAllCache(beforeDate: date);
     }
     
     @objc public static func deleteFile(for url: URL) throws {
