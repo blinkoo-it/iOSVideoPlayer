@@ -50,7 +50,6 @@ public enum VideoCacheManager {
             let fileCreationDate = fileAttributes[.creationDate] as! Date
             if (Int64(fileCreationDate.timeIntervalSince1970) < timestamp) {
                 try fileManager.removeItem(atPath: filePath)
-                try fileManager.removeItem(atPath: VideoCacheConfiguration.configurationFilePath(for: filePath))
             }
         }
     }
