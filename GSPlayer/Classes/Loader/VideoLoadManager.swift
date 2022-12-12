@@ -60,6 +60,14 @@ extension VideoLoadManager: AVAssetResourceLoaderDelegate {
         loader.remove(request: loadingRequest)
     }
     
+    public func resourceLoaderPause(for url: URL?) {
+        if url != nil {
+            if let loader = loaderMap[url!] {
+                print("CANCEL LOADER DEBUG - \(url?.absoluteString ?? "nothing")")
+                loader.cancel()
+            }
+        }
+    }
 }
 
 extension VideoLoadManager: VideoLoaderDelegate {

@@ -35,5 +35,6 @@ class FeedCell: UITableViewCell {
     
     func pause() {
         playerView.pause(reason: .hidden)
+        playerView.clear()
     }
 }

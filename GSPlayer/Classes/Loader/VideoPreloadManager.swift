@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class VideoPreloadManager: NSObject {
+@objcMembers public class VideoPreloadManager: NSObject {
     
     public static let shared = VideoPreloadManager()
     
@@ -22,7 +22,16 @@ public class VideoPreloadManager: NSObject {
     private var isAutoStart: Bool = true
     private var waitingQueue: [URL] = []
     
-    public func set(waiting: [URL]) {
+    @objc public func add(url: URL) {
+        if waitingQueue.isEmpty {
+            set(waiting: [url])
+            return
+        }
+        waitingQueue.append(url)
+        if isAutoStart { start() }
+    }
+    
+    @objc public func set(waiting: [URL]) {
         downloader = nil
         waitingQueue = waiting
         if isAutoStart { start() }
@@ -37,6 +46,8 @@ public class VideoPreloadManager: NSObject {
         isAutoStart = true
         
         let url = waitingQueue.removeFirst()
+        
+        
         
         guard
             !VideoLoadManager.shared.loaderMap.keys.contains(url),

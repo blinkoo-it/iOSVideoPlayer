@@ -169,25 +169,20 @@ open class VideoPlayerView: UIView {
     /// Play a video of the specified url.
     ///
     /// - Parameter url: Can be a local or remote URL
-    open func play(for url: URL) {
+    open func play(for url: URL, with useCache: Bool = true) {
         guard playerURL != url else {
             pausedReason = .waitingKeepUp
-            player?.play()
+            //player?.play()
             return
         }
         
-        observe(player: nil)
-        observe(playerItem: nil)
-        
-        self.player?.currentItem?.cancelPendingSeeks()
-        self.player?.currentItem?.asset.cancelLoading()
+        clear()
         
         let player = AVPlayer()
         player.automaticallyWaitsToMinimizeStalling = false
         
-        let playerItem = AVPlayerItem(loader: url)
+        let playerItem = AVPlayerItem(loader: url, with: useCache)
         playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = true
-        
         self.player = player
         self.playerURL = url
         self.pausedReason = .waitingKeepUp
@@ -197,7 +192,7 @@ open class VideoPlayerView: UIView {
         if playerItem.isEnoughToPlay || url.isFileURL {
             state = .none
             isLoaded = playerItem.status == .readyToPlay
-            player.play()
+            //player.play()
         } else {
             state = .loading
         }
@@ -208,6 +203,14 @@ open class VideoPlayerView: UIView {
         observe(playerItem: playerItem)
     }
     
+    open func clear() {
+        observe(player: nil)
+        observe(playerItem: nil)
+        
+        VideoLoadManager.shared.resourceLoaderPause(for: playerURL)
+        player?.currentItem?.cancelPendingSeeks()
+        player?.currentItem?.asset.cancelLoading()
+    }
     /// Replay video.
     ///
     /// - Parameter resetCount: Reset replayCount
@@ -225,6 +228,9 @@ open class VideoPlayerView: UIView {
     
     /// Pause video.
     open func pause() {
+        if pausedReason == .waitingKeepUp {
+            pausedReason = .userInteraction
+        }
         player?.pause()
     }
     
@@ -253,6 +259,14 @@ open class VideoPlayerView: UIView {
     /// Cancels a previously registered periodic or boundary time observer.
     open func removeTimeObserver(_ observer: Any) {
         player?.removeTimeObserver(observer)
+    }
+    
+    open func currentItem() -> AVPlayerItem? {
+        return player?.currentItem
+    }
+    
+    open func nativePlayer() -> AVPlayer? {
+        return player
     }
 }
 
@@ -362,7 +376,7 @@ private extension VideoPlayerView {
         playerItemKeepUpObservation = playerItem.observe(\.isPlaybackLikelyToKeepUp) { [unowned self] item, _ in
             if item.isPlaybackLikelyToKeepUp {
                 if self.player?.rate == 0, self.pausedReason == .waitingKeepUp {
-                    self.player?.play()
+                    //self.player?.play()
                 }
             }
         }
